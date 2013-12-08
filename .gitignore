@@ -1,0 +1,27 @@
+# Unity .gitignore file.
+.DS_Store
+Library
+Library/*
+*.csproj
+*.sln
+*.userprefs
+Temp
+*.pidb
+Build
+Standard Assets.*
+Assets/Standard Assets
+Assets/Standard Assets/*
+PlayMaker.* 
+Assets/PlayMaker
+Assets/PlayMaker/*
+Photon Unity Networking.*
+Assets/Photon Unity Networking
+Assets/Photon Unity Networking/* 
+iTween.*
+Assets/iTween
+Assets/iTween/*
+Gizmos.* 
+Assets/Gizmos
+Assets/Gizmos/*
+Assets/Blade_girl
+Assets/Blade_girl/*
