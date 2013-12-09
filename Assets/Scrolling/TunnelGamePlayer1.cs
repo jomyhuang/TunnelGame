@@ -5,7 +5,7 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 
 
 	public float _UpSpeed = 0.0f;
-	public float _maxFalldownSpeed = 50.0f;
+	public float _maxFalldownSpeed = 25.0f;
 
 	public float _moveForce =  50.0f;    //365f;	
 	public float _maxMoveSpeed = 3.0f;
@@ -23,12 +23,13 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 
 
 	// Use this for initialization
-	IEnumerator Start () {
+	//IEnumerator Start () {
+	void Start() {
 		_tunnelManager = TunnelManager.Instance;
 
-		rigidbody.isKinematic = true;
-		yield return new WaitForSeconds(2);
-		rigidbody.isKinematic = false;
+		//rigidbody.isKinematic = true;
+		//yield return new WaitForSeconds(2);
+		//rigidbody.isKinematic = false;
 	}
 
 	void OnGUI() {
@@ -80,7 +81,7 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 		else {
 
 			// freeze minor x-axis velocity
-			if( Time.time - _lastMoveTime > 1.0f ) {
+			if( Time.time - _lastMoveTime > 1.0f  ) {
 
 				float freezeVelocity =  Mathf.Abs(rigidbody.velocity.x) / 2;
 				if( freezeVelocity < 0.3f )
@@ -91,11 +92,22 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 			}
 		}
 
-
 		if( Mathf.Abs( rigidbody.velocity.y ) > _maxFalldownSpeed ) {
 			rigidbody.velocity = new Vector3( rigidbody.velocity.x, 
 			                                 Mathf.Sign(rigidbody.velocity.y) * _maxFalldownSpeed, rigidbody.velocity.z );
 		}
+
+		if( Input.GetKeyUp("up") ) {
+			
+			rigidbody.AddForce( Vector3.up * _playerGravity * rigidbody.mass, ForceMode.Impulse );
+		}
+
+		if( Input.GetKeyUp("down") ) {
+
+			rigidbody.velocity = new Vector3( rigidbody.velocity.x, 
+			                                 0, rigidbody.velocity.z );
+		}
+
 
 		/*
 		rigidbody.velocity = new Vector3( _playerMove, rigidbody.velocity.y, rigidbody.velocity.z );

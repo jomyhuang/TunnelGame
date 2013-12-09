@@ -568,7 +568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _UpSpeed: 0
-  _maxFalldownSpeed: 50
+  _maxFalldownSpeed: 25
   _moveForce: 50
   _maxMoveSpeed: 3
 --- !u!1 &239046134
