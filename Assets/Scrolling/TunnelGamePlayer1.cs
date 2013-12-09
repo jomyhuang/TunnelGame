@@ -19,6 +19,7 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 	private float _playerMoveY = 0.0f;
 
 	private float _playerInDirection = 0.0f;
+	private float _lastMoveTime;
 
 
 	// Use this for initialization
@@ -59,19 +60,36 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 		*/
 
 		float h = Input.GetAxis("Horizontal");
-		
-		// If the player is changing direction (h has a different sign to velocity.x) or hasn't reached maxSpeed yet...
-		if( h * rigidbody.velocity.x < _maxMoveSpeed )
-			// ... add a force to the player.
-			rigidbody.AddForce( Vector3.right * h * _moveForce);
-		
-		// If the player's horizontal velocity is greater than the maxSpeed...
-		if( Mathf.Abs( rigidbody.velocity.x ) > _maxMoveSpeed )
-			// ... set the player's velocity to the maxSpeed in the x axis.
-			rigidbody.velocity = new Vector3( Mathf.Sign(rigidbody.velocity.x) * _maxMoveSpeed, 
-			                                 rigidbody.velocity.y, rigidbody.velocity.z );
 
+		if( h != 0 ) {
 
+			// If the player is changing direction (h has a different sign to velocity.x) or hasn't reached maxSpeed yet...
+			if( h * rigidbody.velocity.x < _maxMoveSpeed )
+				// ... add a force to the player.
+				rigidbody.AddForce( Vector3.right * h * _moveForce);
+			
+			// If the player's horizontal velocity is greater than the maxSpeed...
+			if( Mathf.Abs( rigidbody.velocity.x ) > _maxMoveSpeed )
+				// ... set the player's velocity to the maxSpeed in the x axis.
+				rigidbody.velocity = new Vector3( Mathf.Sign(rigidbody.velocity.x) * _maxMoveSpeed, 
+				                                 rigidbody.velocity.y, rigidbody.velocity.z );
+
+			_playerInDirection = Mathf.Sign( h );
+			_lastMoveTime = Time.time;
+		} 
+		else {
+
+			// freeze minor x-axis velocity
+			if( Time.time - _lastMoveTime > 1.0f ) {
+
+				float freezeVelocity =  Mathf.Abs(rigidbody.velocity.x) / 2;
+				if( freezeVelocity < 0.3f )
+					freezeVelocity = 0.0f;
+
+				rigidbody.velocity = new Vector3( freezeVelocity * _playerInDirection, 
+				                                 rigidbody.velocity.y, rigidbody.velocity.z );
+			}
+		}
 
 
 		if( Mathf.Abs( rigidbody.velocity.y ) > _maxFalldownSpeed ) {
