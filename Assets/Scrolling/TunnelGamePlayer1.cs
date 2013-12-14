@@ -21,6 +21,9 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 	private float _playerInDirection = 0.0f;
 	private float _lastMoveTime;
 
+	enum state { Start, Falldown, Die }; 
+	private state _playerState = state.Start;
+
 
 	// Use this for initialization
 	//IEnumerator Start () {
@@ -40,13 +43,24 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 		if( _tunnelManager ) {
 			GUILayout.Label( "section count:" + _tunnelManager.countSection + " time:" + _tunnelManager.countTime );
 		}
+
+		GameObject[] gos;
+		gos = GameObject.FindGameObjectsWithTag("Spwan");
+		GUILayout.Label( "spwan objects :" + gos.Length );
 	}
 
 	void FixedUpdate() {
 
-		// TODO: temp fix logic
-		if( rigidbody.isKinematic )
+		if( _playerState == state.Start ) {
+
+			if( Mathf.Abs( rigidbody.velocity.y ) > _maxFalldownSpeed ) {
+				_playerState = state.Falldown;
+				Debug.Log ( "state to Falldown" );
+			}
+
 			return;
+		}
+
 		/*
 		if( Input.GetButton("Horizontal") ) {
 			
