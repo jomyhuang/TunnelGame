@@ -1,15 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
 
 public class SpwanBox : MonoBehaviour {
 
 	public GameObject PrefabSpwan;
 	public float DestroyTime = 0.0f;
 	public float Probability = 0.5f;
+	// Layout, num of objects
+
+	private ArrayList SpwanObjectList = new ArrayList();
 
 	// Use this for initialization
 	void Start () {
 
+		SpwanObjectList.Clear();
 	}
 
 	void OnEnable() {
@@ -26,22 +32,30 @@ public class SpwanBox : MonoBehaviour {
 
 			//Debug.Log ( "spwan" + spwan.transform.position.y );
 
-			if( DestroyTime > 0.0f )
+			if( DestroyTime > 0.0f ) {
 				Destroy( spwan, DestroyTime );
+			}
+			else {
+				SpwanObjectList.Add ( spwan );
+			}
 		}
 	}
 
 	void OnDisable() {
 
+		/*
 		GameObject[] gos;
 		gos = GameObject.FindGameObjectsWithTag("Spwan");
-
 		Debug.Log ( "destroy log gos " + gos.Length );
+		*/
 
-		foreach( GameObject obj in gos ) {
-			Destroy( obj );
+	
+		// TODO: if spwan object alreay destroy?
+		foreach( GameObject obj in SpwanObjectList ) {
+			//if( obj )
+				Destroy( obj );
 		}
-
+		SpwanObjectList.Clear();
 	}
 
 	// Update is called once per frame

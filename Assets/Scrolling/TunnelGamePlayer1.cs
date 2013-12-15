@@ -181,4 +181,18 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 		//	rigidbody.velocity = new Vector3( rigidbody.velocity.x, _maxVelocity * -1, rigidbody.velocity.z );
 		//}
 	}
+
+	public void playerHit() {
+
+		//animation.Play( "Attack" );
+
+		Animator ani = this.GetComponent<Animator>();
+		ani.SetTrigger( "hitSpwan" );
+
+	}
+
+	void OnCollisionEnter(Collision collision) {
+
+		Debug.Log( "player collision : " + collision.gameObject.tag ); 
+	}
 }
