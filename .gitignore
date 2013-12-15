@@ -21,7 +21,8 @@ iTween.*
 Assets/iTween
 Assets/iTween/*
 Gizmos.* 
-Assets/Gizmos
-Assets/Gizmos/*
 Assets/Blade_girl
 Assets/Blade_girl/*
+Assets/Characters
+Assets/Characters/*
+Assets/_CharacterSystem/*
