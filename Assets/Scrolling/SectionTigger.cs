@@ -3,9 +3,6 @@ using System.Collections;
 
 public class SectionTigger : MonoBehaviour {
 
-	[HideInInspector]
-	public float _speed = 0.0f;
-
 	bool isTigger = false;
 	TunnelManager tunnelManager;
 
@@ -18,10 +15,7 @@ public class SectionTigger : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-		float move = _speed * Time.deltaTime;
-		// move up
-		transform.Translate(Vector3.up * move, Space.World);
+
 	}
 
 	public void setActive( bool bActive ) {
@@ -35,20 +29,12 @@ public class SectionTigger : MonoBehaviour {
 
 	public void OnTriggerEnter( Collider collider ) {
 
-		/*
-		if ((collider.transform.tag == "Player") && (rocks.GetTrigger() ==
-		                                             false)) {
-			rocks.EnabledRigidbody();
-			rocks.SetTrigger(true);
-		} }
-		*/
-
 		//Debug.Log("OnTriggerEnter " + collider.tag );
 
 		if( !isTigger && collider.CompareTag("Player") ) {
 
-			//Debug.Log("OnTriggerEvent");
-			tunnelManager.eventTiggerBox();
+			//tunnelManager.eventTiggerBox();
+			tunnelManager.SendMessage ("eventTiggerBox");
 			isTigger = true;
 		}
 	}

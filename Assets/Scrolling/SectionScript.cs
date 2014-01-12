@@ -3,8 +3,8 @@ using System.Collections;
 
 public class SectionScript : MonoBehaviour {
 
-	[HideInInspector]
-	public float _speed = 0.0f;
+	//[HideInInspector]
+	//public float _speed = 0.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -14,21 +14,14 @@ public class SectionScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		float move = _speed * Time.deltaTime;
+		// remove code
+		//float move = _speed * Time.deltaTime;
 		// move up
-		transform.Translate(Vector3.up * move, Space.World);
+		//transform.Translate(Vector3.up * move, Space.World);
 	}
 
 	public void SetActive( bool bActive  ) {
 
-		/*
-		if( bActive ) {
-
-		}
-		else {
-
-		}
-		*/
 		this.gameObject.SetActive( bActive );
 	}
 

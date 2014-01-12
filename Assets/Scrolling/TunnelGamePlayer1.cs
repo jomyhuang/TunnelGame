@@ -5,7 +5,10 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 
 
 	public float _UpSpeed = 0.0f;
+	public float _startFalldownSpeed = 20.0f;
 	public float _maxFalldownSpeed = 25.0f;
+	private bool _isLockFalldown = false;
+	private float _lockFalldownSpeed = 0.0f;
 
 	public float _moveForce =  50.0f;    //365f;	
 	public float _maxMoveSpeed = 3.0f;
@@ -14,9 +17,9 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 	private float _playerGravity =  9.81f;
 	private float _playerVelocity = 0.0f;
 
-	private float _playerMoveSpeed = 5.0f;
-	private float _playerMoveX = 0.0f;
-	private float _playerMoveY = 0.0f;
+	//private float _playerMoveSpeed = 5.0f;
+	//private float _playerMoveX = 0.0f;
+	//private float _playerMoveY = 0.0f;
 
 	private float _playerInDirection = 0.0f;
 	private float _lastMoveTime;
@@ -49,13 +52,15 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 		GameObject[] gos;
 		gos = GameObject.FindGameObjectsWithTag("Spwan");
 		GUILayout.Label( "spwan objects :" + gos.Length );
+		if( _isLockFalldown )
+			GUILayout.Label( "Lock Falldown speed: " + _lockFalldownSpeed );
 	}
 
 	void FixedUpdate() {
 
 		if( _playerState == state.Start ) {
 
-			if( Mathf.Abs( rigidbody.velocity.y ) > _maxFalldownSpeed ) {
+			if( Mathf.Abs( rigidbody.velocity.y ) > _startFalldownSpeed ) {
 				_playerState = state.Falldown;
 				Debug.Log ( "state to Falldown" );
 			}
@@ -77,19 +82,27 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 		*/
 
 		float h = Input.GetAxis("Horizontal");
+		float falldownY = rigidbody.velocity.y;
+
+		if( _isLockFalldown ) {
+			falldownY = _lockFalldownSpeed;
+		}
+		else {
+			falldownY = rigidbody.velocity.y;	
+		}
 
 		if( h != 0 ) {
 
 			// If the player is changing direction (h has a different sign to velocity.x) or hasn't reached maxSpeed yet...
 			if( h * rigidbody.velocity.x < _maxMoveSpeed )
 				// ... add a force to the player.
-				rigidbody.AddForce( Vector3.right * h * _moveForce);
+				rigidbody.AddForce( Vector3.right * h * _moveForce );
 			
 			// If the player's horizontal velocity is greater than the maxSpeed...
 			if( Mathf.Abs( rigidbody.velocity.x ) > _maxMoveSpeed )
 				// ... set the player's velocity to the maxSpeed in the x axis.
 				rigidbody.velocity = new Vector3( Mathf.Sign(rigidbody.velocity.x) * _maxMoveSpeed, 
-				                                 rigidbody.velocity.y, rigidbody.velocity.z );
+				                                 falldownY, rigidbody.velocity.z );
 
 			_playerInDirection = Mathf.Sign( h );
 			_lastMoveTime = Time.time;
@@ -104,7 +117,7 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 					freezeVelocity = 0.0f;
 
 				rigidbody.velocity = new Vector3( freezeVelocity * _playerInDirection, 
-				                                 rigidbody.velocity.y, rigidbody.velocity.z );
+				                                 falldownY, rigidbody.velocity.z );
 			}
 		}
 
@@ -114,14 +127,35 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 		}
 
 		if( Input.GetKeyUp("up") ) {
-			
-			rigidbody.AddForce( Vector3.up * _playerGravity * rigidbody.mass, ForceMode.Impulse );
+
+			if( _isLockFalldown )
+				_isLockFalldown = false;
+			else {
+				_isLockFalldown = true;
+				_lockFalldownSpeed = -10.0f;
+			}
+
+			//rigidbody.AddForce( Vector3.up * _playerGravity * rigidbody.mass, ForceMode.Impulse );
+
+			// min falldown speed
+			/*
+			if( rigidbody.velocity.y < -5.0f ) {
+
+				float newFalldownY = rigidbody.velocity.y;
+				newFalldownY += 0.5f * _playerGravity * rigidbody.mass;
+
+				rigidbody.velocity = new Vector3( rigidbody.velocity.x, 
+				                                 newFalldownY, rigidbody.velocity.z );
+
+			}
+			*/
 		}
 
 		if( Input.GetKeyUp("down") ) {
 
-			rigidbody.velocity = new Vector3( rigidbody.velocity.x, 
-			                                 0, rigidbody.velocity.z );
+			//_isLockFalldown = false;
+			//rigidbody.velocity = new Vector3( rigidbody.velocity.x, 
+			//                                 0, rigidbody.velocity.z );
 		}
 
 

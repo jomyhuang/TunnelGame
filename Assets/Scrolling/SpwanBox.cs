@@ -28,8 +28,10 @@ public class SpwanBox : MonoBehaviour {
 			//spwan = Instantiate( coin, transform.position, Quaternion.identity ) as GameObject;
 			spwan = Instantiate( PrefabSpwan ) as GameObject;
 
+			float offset = Random.Range ( -3, 3 ); 
+
 			spwan.transform.parent = this.transform;
-			spwan.transform.localPosition = new Vector3(0,0,0);
+			spwan.transform.localPosition = new Vector3( 0 + offset, 0, 0 );
 
 			//Debug.Log ( "spwan" + spwan.transform.position.y );
 

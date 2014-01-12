@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class TunnelManager : MonoBehaviour {
 
-	public float _speed = 0.0f;
+	//public float _speed = 0.0f;
 	// scrolling direction -1:down 1:up
 	//public int _Direction = -1; 
 	public List<SectionScript> _sections = new List<SectionScript>();
@@ -62,18 +62,6 @@ public class TunnelManager : MonoBehaviour {
 
 	void OnGUI() {
 
-		/*
-		if( _currentSection ) {
-			
-			GUILayout.Label( "current: " + _currentList + " pos:" + _currentSection.transform.position );
-			//GUILayout.Label( "_disapperPosY :" + _disapperPosY );
-			//if( _currentFrame.transform.position.y < _disapperPosY ) {
-			//	GUILayout.Label( "Disapper" );
-			//}
-			GUILayout.Label( "screen height:" + _screenUnitHeight + " speed:" + _speed );
-
-		}
-		*/
 	}
 	
 	void Update()
@@ -81,6 +69,7 @@ public class TunnelManager : MonoBehaviour {
 	
 	}
 
+	/*
 	public void setSpeed( float newSpeed ) {
 
 		//yield return 0;
@@ -95,35 +84,12 @@ public class TunnelManager : MonoBehaviour {
 	public float getSpeed() {
 		return _speed;
 	}
+	*/
 
 	public void eventTiggerBox() {
 
 		moveToNextSection();
 	}
-
-	public void eventOverWorldSize( Rigidbody player ) {
-		
-		//Debug.Log ("event over world size");
-
-		//player.isKinematic = true;
-		float playerNewPosX = player.transform.position.x;
-		float playerNewPosY = 0;
-		float playerNewPosZ = player.transform.position.z;
-
-		/// calc current setion new position
-		float oldPosY = player.transform.position.y;
-		float deltaMovePosY = _currentSection.transform.position.y + Mathf.Abs( playerNewPosY -  oldPosY );
-		// -300 + ( 0 - -520)
-		_currentSection.movePosition( new Vector3( 0, deltaMovePosY, 2 ) );
-
-		SectionScript nextSection = getSection( nextList() );
-		nextSection.moveFollowFrame( _currentSection, _tiggerBox );
-
-		// player move to new position
-		player.transform.position = new Vector3( playerNewPosX, playerNewPosY, playerNewPosZ );
-
-		Debug.Log ("event over world size new pos y:" + player.transform.position.y + " new section " + deltaMovePosY );
-	}	
 
 	void initSections() {
 
@@ -135,12 +101,11 @@ public class TunnelManager : MonoBehaviour {
 		}
 		// turn on scrolling mode
 		//setSpeed( this._speed );
-		//_tiggerBox.setActive( false );
 
 		_currentList = 0;
 		_currentSection = getSection( _currentList );
 
-		// todo: determine init pos;
+		// TODO: determine init pos;
 		float initPosX = 0;
 		float initPosY = 0;
 		float initPosZ = 2;
@@ -153,10 +118,6 @@ public class TunnelManager : MonoBehaviour {
 		// active
 		setSectionActive( _currentSection, true );
 		setSectionActive( nextSection, true );
-		//_tiggerBox.setActive( true );
-
-
-		//Debug.Log ( "Manager initScrolling OK" );
 
 		_countSection = 0;
 		_startTime = Time.time;
@@ -184,14 +145,6 @@ public class TunnelManager : MonoBehaviour {
 		_countSection++;
 	}
 	
-	void calcScreenUnitHeight() {
-
-		Vector3 cameraTrans = new Vector3( Screen.width, Screen.height, 0 );
-		Vector3 unitCameraTrans = Camera.main.ScreenToWorldPoint( cameraTrans );
-		
-		_screenUnitHeight = unitCameraTrans.y;
-	}
-
 	SectionScript getSection( int count ) {
 
 		return _sections[ count ];
@@ -211,4 +164,41 @@ public class TunnelManager : MonoBehaviour {
 
 		frame.SetActive( isActive );
 	}
+
+
+
+
+
+	void calcScreenUnitHeight() {
+		
+		Vector3 cameraTrans = new Vector3( Screen.width, Screen.height, 0 );
+		Vector3 unitCameraTrans = Camera.main.ScreenToWorldPoint( cameraTrans );
+		
+		_screenUnitHeight = unitCameraTrans.y;
+	}
+
+	// remove code size doesn't matter
+	public void eventOverWorldSize( Rigidbody player ) {
+		
+		//Debug.Log ("event over world size");
+		
+		//player.isKinematic = true;
+		float playerNewPosX = player.transform.position.x;
+		float playerNewPosY = 0;
+		float playerNewPosZ = player.transform.position.z;
+		
+		/// calc current setion new position
+		float oldPosY = player.transform.position.y;
+		float deltaMovePosY = _currentSection.transform.position.y + Mathf.Abs( playerNewPosY -  oldPosY );
+		// -300 + ( 0 - -520)
+		_currentSection.movePosition( new Vector3( 0, deltaMovePosY, 2 ) );
+		
+		SectionScript nextSection = getSection( nextList() );
+		nextSection.moveFollowFrame( _currentSection, _tiggerBox );
+		
+		// player move to new position
+		player.transform.position = new Vector3( playerNewPosX, playerNewPosY, playerNewPosZ );
+		
+		Debug.Log ("event over world size new pos y:" + player.transform.position.y + " new section " + deltaMovePosY );
+	}	
 }
