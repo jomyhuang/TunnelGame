@@ -23,6 +23,7 @@ public class SpwanBox : MonoBehaviour {
 		bool isSpwan = Random.value < Probability;
 		
 		if( isSpwan ) {
+
 			GameObject spwan;
 			//spwan = Instantiate( coin, transform.position, Quaternion.identity ) as GameObject;
 			spwan = Instantiate( PrefabSpwan ) as GameObject;

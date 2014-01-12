@@ -30,6 +30,8 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 	void Start() {
 		_tunnelManager = TunnelManager.Instance;
 
+		transform.Rotate( new Vector3( 45, 0, 0 ) );
+
 		//rigidbody.isKinematic = true;
 		//yield return new WaitForSeconds(2);
 		//rigidbody.isKinematic = false;
