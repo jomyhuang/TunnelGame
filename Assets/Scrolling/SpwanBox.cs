@@ -10,12 +10,12 @@ public class SpwanBox : MonoBehaviour {
 	public float Probability = 0.5f;
 	// Layout, num of objects
 
-	private ArrayList SpwanObjectList = new ArrayList();
+	//private ArrayList SpwanObjectList = new ArrayList();
 
 	// Use this for initialization
 	void Start () {
 
-		SpwanObjectList.Clear();
+		//SpwanObjectList.Clear();
 	}
 
 	void OnEnable() {
@@ -35,27 +35,30 @@ public class SpwanBox : MonoBehaviour {
 			if( DestroyTime > 0.0f ) {
 				Destroy( spwan, DestroyTime );
 			}
+			/*
 			else {
 				SpwanObjectList.Add ( spwan );
 			}
+			*/
 		}
 	}
 
 	void OnDisable() {
 
 		/*
-		GameObject[] gos;
-		gos = GameObject.FindGameObjectsWithTag("Spwan");
-		Debug.Log ( "destroy log gos " + gos.Length );
-		*/
-
-	
-		// TODO: if spwan object alreay destroy?
 		foreach( GameObject obj in SpwanObjectList ) {
 			//if( obj )
 				Destroy( obj );
 		}
 		SpwanObjectList.Clear();
+		*/
+
+		// delete all child objects 
+		for( int i = 0; i < this.transform.childCount; i++ )
+		{
+			GameObject go = this.transform.GetChild(i).gameObject;
+			Destroy( go );
+		}
 	}
 
 	// Update is called once per frame

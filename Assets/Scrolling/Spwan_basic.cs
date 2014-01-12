@@ -25,8 +25,8 @@ public class Spwan_basic : MonoBehaviour {
 			//Debug.Log( "player hit" );
 			gameObject.SetActive( false );
 
-			// TODO: check correct destroy~ dont use Destroy( this ) mean destroy this script not object.
-			Destroy( gameObject );
+			// Right way destory Destory( this.gameObject ) not Destory( this );
+			Destroy( this.gameObject );
 		}
 	}
 }

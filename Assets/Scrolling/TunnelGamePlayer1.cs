@@ -167,6 +167,9 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 		}
 		*/
 
+#if fasle
+
+		// turn on over world size switch
 		if( _tunnelManager ) {
 
 			// TODO: setting max world size
@@ -175,6 +178,7 @@ public class TunnelGamePlayer1 : MonoBehaviour {
 				_tunnelManager.eventOverWorldSize( this.rigidbody );
 			}
 		}
+#endif
 
 		// max velocity 
 		//if( Mathf.Abs(rigidbody.velocity.y) > _maxVelocity ) {
